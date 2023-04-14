@@ -81,7 +81,7 @@ def login():
 def mainer():
     if session['user']:
         # Отображаем форму входа
-        return render_template('main.html',data=session['user'])
+        return render_template('main1.html',data=session['user'])
     else:
         return redirect('/login')
 
