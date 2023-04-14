@@ -10,7 +10,7 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Пример приложения</a>
+    <a class="navbar-brand" href="/">MyTeam</a>
     <ul class="navbar-nav">
       {% if 'user' in session %}
         <li class="nav-item">
@@ -34,12 +34,6 @@
   </div>
   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  <script>
-    // проверяем, был ли пользователь авторизован
-    if (userLoggedIn()) {
-      // если да, то открываем форму главной страницы
-      openHomePage();
-    }
-  </script>
+
 </body>
 </html>

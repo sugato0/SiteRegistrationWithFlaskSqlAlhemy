@@ -62,14 +62,14 @@ def login():
 
         # Проверяем, существует ли пользователь с таким email и паролем
         user = sessionBD.query(User).filter_by(email=email, password=password).first()
-        print(123)
+
         if user:
             # Сохраняем пользователя в сессии
 
             session['user'] = {'id': user.id, 'username': user.username}
             # Перенаправляем пользователя на главную страницу
-            print(456)
-            return redirect('/kk')
+
+            return redirect('/')
 
         else:
             return render_template('login.html', error='Неправильный email или пароль')
@@ -77,11 +77,20 @@ def login():
     # Отображаем форму входа
     return render_template('login.html')
 # Маршрут для отображения формы входа пользователя
-@app.route('/kk', methods=['GET', 'POST'])
-def kk():
+@app.route('/', methods=['GET', 'POST'])
+def mainer():
+    if session['user']:
+        # Отображаем форму входа
+        return render_template('main.html',data=session['user'])
+    else:
+        return redirect('/login')
 
-    # Отображаем форму входа
-    return render_template('main.html',data=session['user'])
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.clear()
+    return redirect("/login")
+
 
 if __name__ == '__main__':
 
