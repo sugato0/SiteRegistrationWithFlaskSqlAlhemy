@@ -55,21 +55,17 @@
 
 <body>
 
-    <header class="container">
-        <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">Users Page</a>
-        </nav>
-    </header>
+
 
     <main class="container content-blocks">
 
-        {% for user in users %}
+        {% for user in data %}
         <section class="content-block">
             <a href="{{user.site_url}}">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{user.username}}</h5>
-                        <p class="card-text">{{user.email}}</p>
+                        <h5 class="card-title">{{user}}</h5>
+                        <p class="card-text">{{user}}</p>
                     </div>
                 </div>
             </a>

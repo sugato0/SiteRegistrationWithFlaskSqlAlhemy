@@ -86,8 +86,8 @@ def mainer():
 
 @app.route('/main/people', methods=['GET', 'POST'])
 def people():
-
-    return render_template('people.html',data=sessionBD)
+    blocki = sessionBD.query(User).all()
+    return render_template('people.html',data=blocki)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
