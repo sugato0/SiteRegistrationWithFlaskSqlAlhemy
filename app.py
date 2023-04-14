@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect,session
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -79,17 +79,21 @@ def login():
 # Маршрут для отображения формы входа пользователя
 @app.route('/', methods=['GET', 'POST'])
 def mainer():
-    if session['user']:
-        # Отображаем форму входа
-        return render_template('main1.html',data=session['user'])
-    else:
-        return redirect('/login')
+
+
+
+    return render_template('main1.html',data=session)
+
+@app.route('/main/people', methods=['GET', 'POST'])
+def people():
+
+    return render_template('people.html',data=sessionBD)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.clear()
-    return redirect("/login")
+    return redirect("/")
 
 
 if __name__ == '__main__':
