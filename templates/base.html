@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Пример приложения</a>
+    <ul class="navbar-nav">
+      {% if 'user' in session %}
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">{{ session['user']['username'] }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Выйти</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Войти</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/register">Зарегистрироваться</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script>
+    // проверяем, был ли пользователь авторизован
+    if (userLoggedIn()) {
+      // если да, то открываем форму главной страницы
+      openHomePage();
+    }
+  </script>
+</body>
+</html>
