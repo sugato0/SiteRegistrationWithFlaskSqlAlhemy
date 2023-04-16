@@ -1,14 +1,19 @@
+import os
+
 from flask import Flask, render_template, request, redirect,session
 from sqlalchemy import create_engine, Column, Integer, String, select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # Создаем экземпляр класса Flask
+from werkzeug.utils import secure_filename
+
 app = Flask(__name__)
 app.secret_key = b'hasudfhsdahfDFHDH23'
 # Создаем экземпляр класса Engine для работы с базой данных SQLite
 engine = create_engine('sqlite:///users.db', echo=True)
-
+app.config['UPLOAD_FOLDER'] = 'media'
+HOSTNAME = "localhost://127.0.0.1"
 # Создаем базовый класс для определения моделей таблиц
 Base = declarative_base()
 
@@ -20,6 +25,7 @@ class User(Base):
     username = Column(String)
     email = Column(String)
     sity = Column(String)
+    image_link = Column(String)
     password = Column(String)
 
 # Создаем таблицу "users"
@@ -43,8 +49,9 @@ def register():
         if user:
             return render_template('register.html', error='Пользователь с таким email уже зарегистрирован')
         sityname = "где-то"
+        image_link = "/"+"media/Avatar-Profile-Vector-PNG-File.png"
         # Создаем нового пользователя и добавляем его в базу данных
-        new_user = User(username=username, email=email, password=password,sity = sityname )
+        new_user = User(username=username, email=email, password=password, sity = sityname,image_link = image_link )
         sessionBD.add(new_user)
         sessionBD.commit()
 
@@ -81,18 +88,33 @@ def login():
 # Маршрут для отображения формы входа пользователя
 @app.route('/', methods=['GET', 'POST'])
 def mainer():
-
-
-
     return render_template('main1.html',data=session)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in {'jpg', 'jpeg', 'png', 'gif'}
+
 @app.route('/main/profile', methods=['GET', 'POST'])
 def profile():
     if request.method == 'POST':
         # Обработка данных из формы
+        file = request.files['image']
+
+        # проверяем, что файл имеет допустимое расширение
+        if not allowed_file(file.filename):
+            return "Допустимы только файлы с расширением jpg, jpeg, png, gif"
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        # # возвращаем URL загруженного изображения
+        #     return render_template('index.html', result='/' + os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
         name = request.form['name']
+
         email = request.form['email']
         password = request.form['password']
         sity = request.form['sity']
+        image_link = "/"+os.path.join(app.config['UPLOAD_FOLDER'], filename).replace("\\","/")
         # Обновление данных в БД
 
         users = sessionBD.query(User).filter_by(id = session["user"]["id"]).first()
@@ -105,6 +127,8 @@ def profile():
 
         users.sity = sity
 
+        users.image_link = image_link
+
         sessionBD.commit()
 
         session['user'] = {'id': users.id, 'username': users.username,'email':users.email}
@@ -116,7 +140,7 @@ def profile():
 
         users = sessionBD.query(User).filter_by(id=session["user"]["id"]).first()
 
-        return render_template('profile.html', name=users.username, email=users.email,password=users.password,sity = users.sity)
+        return render_template('profile.html', name=users.username,image = users.image_link, email=users.email,password=users.password,sity = users.sity)
 
 
 @app.route('/main/people', methods=['GET', 'POST'])

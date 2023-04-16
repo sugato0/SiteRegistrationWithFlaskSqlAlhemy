@@ -51,14 +51,73 @@
 .bg-primary {
     background-color: #0d6efd !important;
 }
+.fr{
+    width:25%;
+}
+header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    aside {
+      position: fixed;
+      top: 90px;
+      left: 0;
+      bottom: 0;
+      width: 400px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1000;
+    }
     </style>
 </head>
 
 <body>
 
+<header>
+    {% include 'header.html' %}
+</header>
+<!--    <form action="{{url_for('profile')}}" method="POST" id="edit-form" class="d-block fr">-->
+<!--           <div class="form-group mx-auto">-->
+<!--                <label for="sity">Сортировать по месту</label>-->
+<!--                <input type="text" class="form-control" id="sity" name="sity" value="{{sity}}">-->
+<!--           </div>-->
+<!--       <button type="submit" class="btn btn-primary" id="save-btn">Применить</button>-->
+<!--    </form>-->
 
-{% include 'header.html' %}
-    <main class="container content-blocks">
+<aside>
+<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-white" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
+      <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Сортировать</span>
+    </a>
+    <hr>
+    <form action="{{url_for('profile')}}" method="POST" id="edit-form" class="d-block fr">
+
+           <div class="form-group">
+                <label for="sity">Место</label>
+                <input type="text" class="form-control" id="sity" name="sity" value="{{sity}}">
+           </div>
+            <button type="submit" class="btn btn-primary" id="save-btn">Сортировать</button>
+
+    </form>
+    <hr>
+
+  </div>
+    </aside>
+
+
+
+
+
+
+   <main class="container content-blocks" style="margin-top:5%; margin-left:10%;">
+
+
+
         {% if data %}
         {% for user in data %}
         <section class="content-block">
@@ -66,7 +125,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center">
-                          <img src="https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-File.png" style="width:200px;height:200px;" class="rounded" alt="...">
+                          <img src="{{user.image_link}}" style="width:200px;height:200px;" class="rounded" alt="...">
                         </div>
                         <div class="">
 
