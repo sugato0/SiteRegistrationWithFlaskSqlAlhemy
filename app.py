@@ -145,8 +145,15 @@ def profile():
 
 @app.route('/main/people', methods=['GET', 'POST'])
 def people():
-    blocki = sessionBD.query(User).all()
-    return render_template('people.html',data=blocki)
+    if request.method == 'POST':
+        # Получаем данные из формы
+        sities = request.form['sity']
+
+        blocki = sessionBD.query(User).filter_by(sity = sities)
+        return render_template('people.html',data=blocki)
+    else:
+        blocki = sessionBD.query(User).all()
+        return render_template('people.html', data=blocki)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
