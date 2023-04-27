@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Моя страница</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css">
+<style>
+/* Добавляем стили для основной секции */
+section {
+margin-top: 50px;
+margin-bottom: 50px;
+padding: 50px;}
+body {
+margin: 0;
+padding: 0;
+background: url("https://avatanplus.com/files/resources/original/56c896ed5ac91152ff8d8f3c.jpg");
+background-size: cover;
+}
+header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+/* Добавляем стили для элементов */
+.card {
+margin-bottom: 50px;
+}
+
+.card-title {
+font-size: 24px;
+margin-bottom: 20px;
+}
+
+.card-text {
+margin-bottom: 20px;
+}
+.btn-primary:hover {
+animation: pulse 1s;
+}
+@keyframes pulse {
+0% {
+transform: scale(1);
+}
+50% {
+transform: scale(1.1);
+}
+100% {
+transform: scale(1);
+}
+}
+</style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+
+                <h5 class="card-title">Информация о пользователе</h5>
+                <p class="card-text">{{data.username}}</p>
+                <p class="card-text">Возраст: 30 лет</p>
+                <p class="card-text">{{data.sity}}</p>
+                <p class="card-text">Навыки: HTML, CSS, JavaScript </p>
+                <p class="card-text">Описание: я крут или курт </p>
+                <p class="card-text">Контакты:<br>
+                <a href="tel:+77777777777">+7 (777) 777-77-77</a>
+                <br><a href="{{data.emails}}">{{data.email}}</a>
+                <br><a href="http://t.me/zvukii_paniki">@zvukii_paniki</a> </p>
+
+                <i class="fas fa-envelope"></i>
+                <i class="fas fa-envelope"></i>
+                <!--<a href="#" class="btn btn-primary">Перейти в социальную сеть</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+
+    <img src="https://cdnstatic.rg.ru/uploads/images/160/94/74/kisa.jpg" alt="Фотография 1" width="400" height="400">
+
+    </p>
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+{% include 'footer.html' %}
+</body>
+</html>
