@@ -13,7 +13,7 @@ app.secret_key = b'hasudfhsdahfDFHDH23'
 # Создаем экземпляр класса Engine для работы с базой данных SQLite
 engine = create_engine('sqlite:///users.db', echo=True)
 app.config['UPLOAD_FOLDER'] = 'media'
-HOSTNAME = "localhost://127.0.0.1"
+HOSTNAME = "http://127.0.0.1:5000/"
 # Создаем базовый класс для определения моделей таблиц
 Base = declarative_base()
 
@@ -23,10 +23,13 @@ class User(Base):
     id = Column(Integer, primary_key=True)
 
     username = Column(String)
+    
     email = Column(String)
     sity = Column(String)
     image_link = Column(String)
     password = Column(String)
+
+
 
 # Создаем таблицу "users"
 Base.metadata.create_all(engine)
@@ -49,7 +52,7 @@ def register():
         if user:
             return render_template('register.html', error='Пользователь с таким email уже зарегистрирован')
         sityname = "где-то"
-        image_link = "/"+"media/Avatar-Profile-Vector-PNG-File.png"
+        image_link = HOSTNAME+"media/Avatar-Profile-Vector-PNG-File.png"
         # Создаем нового пользователя и добавляем его в базу данных
         new_user = User(username=username, email=email, password=password, sity = sityname,image_link = image_link )
         sessionBD.add(new_user)
@@ -94,7 +97,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in {'jpg', 'jpeg', 'png', 'gif'}
 
-@app.route('/main/profile', methods=['GET', 'POST'])
+@app.route('/main/profile/', methods=['GET', 'POST'])
 def profile():
     if request.method == 'POST':
         # Обработка данных из формы
@@ -114,7 +117,7 @@ def profile():
         email = request.form['email']
         password = request.form['password']
         sity = request.form['sity']
-        image_link = "/"+os.path.join(app.config['UPLOAD_FOLDER'], filename).replace("\\","/")
+        image_link = HOSTNAME+os.path.join(app.config['UPLOAD_FOLDER'], filename).replace("\\","/")
         # Обновление данных в БД
 
         users = sessionBD.query(User).filter_by(id = session["user"]["id"]).first()
@@ -134,11 +137,12 @@ def profile():
         session['user'] = {'id': users.id, 'username': users.username,'email':users.email}
 
 
+        return render_template('profile.html', name=name,image = image_link, email=email,password=password,sity = sity)
+    
 
-        return render_template('profile.html', name=name, email=email, password=password,sity = sity)
     else:
 
-        users = sessionBD.query(User).filter_by(id=session["user"]["id"]).first()
+        users = sessionBD.query(User).filter_by(id=session['user']['id']).first()
 
         return render_template('profile.html', name=users.username,image = users.image_link, email=users.email,password=users.password,sity = users.sity)
 
@@ -154,7 +158,24 @@ def people():
     else:
         blocki = sessionBD.query(User).all()
         return render_template('people.html', data=blocki)
+        
+@app.route('/main/noYour/<int:ids>', methods=['GET', 'POST'])
+def peopleProfile(ids):
+    murrr = False
+    try:
+        murrr = ids == session['user']['id']
+    except:
+        pass
+    if murrr:
+        # Получаем данные из формы
+        users = sessionBD.query(User).filter_by(id=session['user']['id']).first()
 
+        return render_template('profile.html', name=users.username,image = users.image_link, email=users.email,password=users.password,sity = users.sity)
+
+        
+    else:
+        users = sessionBD.query(User).filter_by(id=ids).first()
+        return render_template('userProfiles.html', data=users)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():

@@ -117,14 +117,14 @@ header {
 
 
 
-   <main class="container content-blocks" style="margin-top:5%; margin-left:15%;">
+   <main class="container content-blocks" style="margin-top:5%; margin-left:15%; ">
 
 
 
         {% if data %}
         {% for user in data %}
         <section class="content-block">
-            <a href="\main\profile">
+            <a href="\main\noYour\{{user.id}}" method = "GET">
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center">
@@ -148,7 +148,7 @@ header {
 
 
     </main>
-
+    {% include 'footer.html' %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

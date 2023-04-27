@@ -24,6 +24,16 @@
   type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
 ></script>
+<style>
+  header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      
+    }
+</style>
 </head>
 <body>
 
@@ -46,9 +56,7 @@
       <p class="card-text">Город: <span id="sities">{{sity}}</span></p>
 
      </div>
-     <div class="card-footer text-center">
-      <button class="btn btn-primary btn-sm" id="edit-btn">Редактировать <i class="fas fa-edit"></i></button>
-     </div>
+     
     </div>
    </div>
    <div class="col-md-8 mt-4">
@@ -89,6 +97,8 @@
    </div>
   </div>
  </div>
+
+ {% include 'footer.html' %}
 
  <!-- Подключение JS библиотек -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-R4/UIMB7mKNEpBA9p7eFztmRpZxbnG8VTXtZU/uxZPvSLmOh5csaPnzYslJQeybm0/2JW3K8LrH5r+pfGgRnHw==" crossorigin="anonymous"></script>
