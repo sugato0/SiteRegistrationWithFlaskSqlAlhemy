@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.secret_key = b'hasudfhsdahfDFHDH23'
 # Создаем экземпляр класса Engine для работы с базой данных SQLite
 engine = create_engine('sqlite:///users.db', echo=True)
-app.config['UPLOAD_FOLDER'] = 'media'
+app.config['UPLOAD_FOLDER'] = 'static/media'
 HOSTNAME = "http://127.0.0.1:5000/"
 # Создаем базовый класс для определения моделей таблиц
 Base = declarative_base()
@@ -52,7 +52,7 @@ def register():
         if user:
             return render_template('register.html', error='Пользователь с таким email уже зарегистрирован')
         sityname = "где-то"
-        image_link = HOSTNAME+"media/Avatar-Profile-Vector-PNG-File.png"
+        image_link = HOSTNAME+"static/media/Avatar-Profile-Vector-PNG-File.png"
         # Создаем нового пользователя и добавляем его в базу данных
         new_user = User(username=username, email=email, password=password, sity = sityname,image_link = image_link )
         sessionBD.add(new_user)
@@ -118,6 +118,7 @@ def profile():
         password = request.form['password']
         sity = request.form['sity']
         image_link = HOSTNAME+os.path.join(app.config['UPLOAD_FOLDER'], filename).replace("\\","/")
+
         # Обновление данных в БД
 
         users = sessionBD.query(User).filter_by(id = session["user"]["id"]).first()
